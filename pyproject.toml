@@ -9,4 +9,5 @@ dependencies = [
     "google-adk>=0.1.0",
     "litellm==1.65.1",
     "pip>=25.0.1",
+    "requests>=2.31.0",
 ]
