@@ -13,6 +13,7 @@
 # limitations under the License.
 
 # @title Import necessary libraries
+from google.adk.models.lite_llm import LiteLlm
 from google.adk.agents import Agent
 from google.adk.models.lite_llm import LiteLlm # For multi-model support
 from google.adk.sessions import InMemorySessionService
@@ -23,8 +24,8 @@ from google.adk.tools.tool_context import ToolContext
 # Use one of the model constants defined earlier
 
 MODEL_GEMINI_2_0_FLASH = "gemini-2.0-flash"
-# MODEL_GPT_4O = "openai/gpt-4o"
-MODEL_GPT_4O_MINI = "openai/gpt-4o"
+MODEL_GPT_4O = "openai/gpt-4o"
+# MODEL_GPT_4O_MINI = "openai/gpt-4o-mini"
 
 def get_weather_stateful(city: str, tool_context: ToolContext) -> dict:
     """Retrieves weather, converts temp unit based on session state."""
@@ -48,15 +49,16 @@ def get_weather_stateful(city: str, tool_context: ToolContext) -> dict:
         temp_c = data["temp_c"]
         condition = data["condition"]
 
-        # Format temperature based on state preference
+        # Enhanced reporting about unit conversion
         if preferred_unit == "Fahrenheit":
-            temp_value = (temp_c * 9/5) + 32 # Calculate Fahrenheit
+            temp_value = (temp_c * 9/5) + 32
             temp_unit = "°F"
-        else: # Default to Celsius
+            report = f"The weather in {city.capitalize()} is {condition} with a temperature of {temp_value:.0f}{temp_unit} (converted from {temp_c}°C)."
+        else:
             temp_value = temp_c
             temp_unit = "°C"
+            report = f"The weather in {city.capitalize()} is {condition} with a temperature of {temp_value:.0f}{temp_unit}."
 
-        report = f"The weather in {city.capitalize()} is {condition} with a temperature of {temp_value:.0f}{temp_unit}."
         result = {"status": "success", "report": report}
         print(f"--- Tool: Generated report in {preferred_unit}. Result: {result} ---")
 
@@ -89,6 +91,31 @@ def say_goodbye() -> str:
     print(f"--- Tool: say_goodbye called ---")
     return "Goodbye! Have a great day."
 
+def set_temperature_unit(unit: str, tool_context: ToolContext) -> dict:
+    """Updates the user's preferred temperature unit in session state.
+    
+    Args:
+        unit (str): The preferred temperature unit ("Celsius" or "Fahrenheit")
+        tool_context (ToolContext): Context containing session state
+        
+    Returns:
+        dict: Status of the operation
+    """
+    normalized_unit = unit.strip().capitalize()
+    if normalized_unit not in ["Celsius", "Fahrenheit"]:
+        return {
+            "status": "error", 
+            "error_message": f"Invalid temperature unit: '{unit}'. Please use 'Celsius' or 'Fahrenheit'."
+        }
+    
+    # Update the preference in state
+    tool_context.state["user_preference_temperature_unit"] = normalized_unit
+    
+    return {
+        "status": "success",
+        "message": f"Your temperature unit preference has been updated to {normalized_unit}."
+    }
+
 print("Greeting and Farewell tools defined.")
 
 
@@ -97,8 +124,8 @@ greeting_agent = None
 try:
     greeting_agent = Agent(
         # Using a potentially different/cheaper model for a simple task
-        model = MODEL_GEMINI_2_0_FLASH,
-        # model=LiteLlm(model=MODEL_GPT_4O_MINI), # If you would like to experiment with other models 
+        # model = MODEL_GEMINI_2_0_FLASH,
+        model=LiteLlm(model=MODEL_GPT_4O), # If you would like to experiment with other models 
         name="greeting_agent",
         instruction="You are the Greeting Agent. Your ONLY task is to provide a friendly greeting to the user. "
                     "Use the 'say_hello' tool to generate the greeting. "
@@ -116,8 +143,8 @@ farewell_agent = None
 try:
     farewell_agent = Agent(
         # Can use the same or a different model
-        model = MODEL_GEMINI_2_0_FLASH,
-        # model=LiteLlm(model=MODEL_GPT_4O_MINI), # If you would like to experiment with other models
+        # model = MODEL_GEMINI_2_0_FLASH,
+        model=LiteLlm(model=MODEL_GPT_4O), # If you would like to experiment with other models
         name="farewell_agent",
         instruction="You are the Farewell Agent. Your ONLY task is to provide a polite goodbye message. "
                     "Use the 'say_goodbye' tool when the user indicates they are leaving or ending the conversation "
@@ -131,17 +158,18 @@ except Exception as e:
     print(f"❌ Could not create Farewell agent. Check API Key ({farewell_agent.model}). Error: {e}")
     
     
-root_agent_model = MODEL_GEMINI_2_0_FLASH # Choose orchestration model
+root_agent_model = LiteLlm(model=MODEL_GPT_4O) # Choose orchestration model
 
 root_agent = Agent(
-    name="weather_agent_v4_stateful", # New version name
+    name="weather_agent_v4_stateful",
     model=root_agent_model,
     description="Main agent: Provides weather (state-aware unit), delegates greetings/farewells, saves report to state.",
     instruction="You are the main Weather Agent. Your job is to provide weather using 'get_weather_stateful'. "
+                "You can update user's temperature unit preference with 'set_temperature_unit'. "
                 "The tool will format the temperature based on user preference stored in state. "
                 "Delegate simple greetings to 'greeting_agent' and farewells to 'farewell_agent'. "
                 "Handle only weather requests, greetings, and farewells.",
-    tools=[get_weather_stateful], # Use the state-aware tool
-    sub_agents=[greeting_agent, farewell_agent], # Include sub-agents
-    output_key="last_weather_report" # <<< Auto-save agent's final weather response
+    tools=[get_weather_stateful, set_temperature_unit],
+    sub_agents=[greeting_agent, farewell_agent],
+    output_key="last_weather_report"
 )
