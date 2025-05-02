@@ -16,6 +16,8 @@ This version allows you to run each step of the tutorial without manually settin
     *   Anthropic Console: [https://console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys)
 *   **OpenWeatherMap API Key:** Required for the enhanced weather functionality (free tier available).
     *   OpenWeatherMap: [https://home.openweathermap.org/api_keys](https://home.openweathermap.org/api_keys)
+*   **SerpAPI Key:** Required for the web search functionality.
+    *   SerpAPI: [https://serpapi.com/](https://serpapi.com/)
 
 ## Setup Instructions
 
@@ -53,6 +55,7 @@ This version allows you to run each step of the tutorial without manually settin
     pip install google-adk
     pip install litellm
     pip install requests    # For weather API functionality
+    pip install google-search-results  # For SerpAPI functionality
     ```
 
 ## Configuration: API Keys
@@ -73,6 +76,7 @@ Before running any agent step, you **must** configure your API keys.
     ANTHROPIC_API_KEY=PASTE_YOUR_ACTUAL_ANTHROPIC_API_KEY_HERE
     OPENAI_API_KEY=PASTE_YOUR_ACTUAL_OPENAI_API_KEY_HERE
     OPENWEATHERMAP_API_KEY=PASTE_YOUR_ACTUAL_OPENWEATHERMAP_API_KEY_HERE
+    SERPAPI_KEY=PASTE_YOUR_ACTUAL_SERPAPI_KEY_HERE
     # --- End of keys ---
     ```
 4.  **Save the `.env` file.**
@@ -119,48 +123,24 @@ The `adk api_server` command starts a FastAPI server, exposing your agent via an
     ```
 *   For detailed usage, API endpoint structure, and options for `adk api_server`, please consult the [Official ADK Documentation - Running Agents](https://google.github.io/adk-docs/get-started/running-agents/).
 
-## Directory Structure
+## Current Project Structure
 
 ```
 adk-tutorial/
-├── step_1/
-│   ├── __init__.py
-│   ├── agent.py      # Agent definition for Step 1
-│   └── .env          # API Key configuration for Step 1
-├── step_2_anthropic/
-│   ├── __init__.py
-│   ├── agent.py      # Agent definition for Step 2 (Anthropic)
-│   └── .env          # API Key configuration for Step 2 (Anthropic)
-├── step_2_gpt4/
-│   ├── __init__.py
-│   ├── agent.py      # Agent definition for Step 2 (GPT-4)
-│   └── .env          # API Key configuration for Step 2 (GPT-4)
-├── step_3/
-│   ├── __init__.py
-│   ├── agent.py      # Agent definition for Step 3
-│   └── .env          # API Key configuration for Step 3
-├── step_4/
-│   # ... and so on for subsequent steps
-├── step_5/
-│   # ...
-└── step_6/
-    # ...
 ├── coordinator_agent/
 │   ├── utils/
-│   │   ├── weather.py    # Enhanced weather functionality
-│   │   ├── conversation.py
-│   │   ├── search.py
-│   │   └── preferences.py
+│   │   ├── weather.py    # Enhanced weather functionality with geocoding support
+│   │   └── search.py     # Web search functionality using SerpAPI
 │   ├── agent.py          # Main coordinator agent
-│   └── .env              # API Key configuration including OpenWeatherMap
+│   └── .env              # API Key configuration including OpenWeatherMap and SerpAPI
 └── README.md             # This file
 ```
 
-Each `step_X` directory is self-contained regarding its agent logic (`agent.py`) and required API keys (`.env`).
+**Note:** The codebase has been streamlined to focus only on the coordinator agent with enhanced weather and search functionality. The step-by-step tutorial files are available in the original repository for reference.
 
 ## Enhanced Weather Functionality
 
-The enhanced weather agent (in the `coordinator_agent` directory) includes several improvements:
+The enhanced weather agent includes several improvements:
 
 * **Real Weather Data**: Uses OpenWeatherMap API to provide actual weather conditions
 * **Geocoding**: Converts city names to geographic coordinates using Nominatim (OpenStreetMap)
@@ -173,3 +153,29 @@ To use this enhanced weather functionality:
 1. Sign up for a free OpenWeatherMap API key
 2. Add this key to the `.env` file as `OPENWEATHERMAP_API_KEY`
 3. Interact with the agent asking for weather in any city (e.g., "What's the weather in Charleston, SC?")
+
+## Guardrail Reference Code
+
+The repository includes reference code for implementing guardrails in your agents. These guardrails can help ensure your agent:
+
+* Properly validates and sanitizes user input
+* Handles API errors gracefully
+* Provides helpful fallback responses when services are unavailable
+* Maintains context and state across conversation turns
+* Respects user preferences for units and formatting
+
+You can find examples of these guardrails implemented throughout the weather module code.
+
+## Web Search Functionality
+
+The agent includes web search capabilities using SerpAPI:
+
+* **Real-time Information**: Access up-to-date information from the web
+* **Structured Results**: Returns organized search results with snippets and URLs
+* **Topic Research**: Can research topics beyond the agent's training data
+* **Error Handling**: Gracefully handles API errors and rate limiting
+
+To use the web search functionality:
+1. Sign up for a SerpAPI key
+2. Add this key to the `.env` file as `SERPAPI_KEY`
+3. Interact with the agent asking for information (e.g., "What are the latest developments in AI?")
