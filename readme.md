@@ -14,6 +14,8 @@ This version allows you to run each step of the tutorial without manually settin
     *   Google AI Studio: [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
     *   OpenAI Platform: [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
     *   Anthropic Console: [https://console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys)
+*   **OpenWeatherMap API Key:** Required for the enhanced weather functionality (free tier available).
+    *   OpenWeatherMap: [https://home.openweathermap.org/api_keys](https://home.openweathermap.org/api_keys)
 
 ## Setup Instructions
 
@@ -46,10 +48,11 @@ This version allows you to run each step of the tutorial without manually settin
         *(You should see `(.venv)` preceding your terminal prompt)*
 
 3.  **Install Dependencies:**
-    Install ADK and LiteLLM (for multi-model support).
+    Install ADK and required packages.
     ```bash
     pip install google-adk
     pip install litellm
+    pip install requests    # For weather API functionality
     ```
 
 ## Configuration: API Keys
@@ -69,6 +72,7 @@ Before running any agent step, you **must** configure your API keys.
     GOOGLE_API_KEY=PASTE_YOUR_ACTUAL_GOOGLE_API_KEY_HERE
     ANTHROPIC_API_KEY=PASTE_YOUR_ACTUAL_ANTHROPIC_API_KEY_HERE
     OPENAI_API_KEY=PASTE_YOUR_ACTUAL_OPENAI_API_KEY_HERE
+    OPENWEATHERMAP_API_KEY=PASTE_YOUR_ACTUAL_OPENWEATHERMAP_API_KEY_HERE
     # --- End of keys ---
     ```
 4.  **Save the `.env` file.**
@@ -141,7 +145,31 @@ adk-tutorial/
 │   # ...
 └── step_6/
     # ...
-└── README.md         # This file
+├── coordinator_agent/
+│   ├── utils/
+│   │   ├── weather.py    # Enhanced weather functionality
+│   │   ├── conversation.py
+│   │   ├── search.py
+│   │   └── preferences.py
+│   ├── agent.py          # Main coordinator agent
+│   └── .env              # API Key configuration including OpenWeatherMap
+└── README.md             # This file
 ```
 
 Each `step_X` directory is self-contained regarding its agent logic (`agent.py`) and required API keys (`.env`).
+
+## Enhanced Weather Functionality
+
+The enhanced weather agent (in the `coordinator_agent` directory) includes several improvements:
+
+* **Real Weather Data**: Uses OpenWeatherMap API to provide actual weather conditions
+* **Geocoding**: Converts city names to geographic coordinates using Nominatim (OpenStreetMap)
+* **Temperature Unit Preferences**: Supports both Fahrenheit (default) and Celsius based on user preferences
+* **Detailed Weather Reports**: Provides temperature, conditions, humidity, and wind speed
+* **Error Handling**: Robust error handling for API failures and location lookup issues
+* **In-Memory Caching**: Caches geocoding results to improve performance
+
+To use this enhanced weather functionality:
+1. Sign up for a free OpenWeatherMap API key
+2. Add this key to the `.env` file as `OPENWEATHERMAP_API_KEY`
+3. Interact with the agent asking for weather in any city (e.g., "What's the weather in Charleston, SC?")
