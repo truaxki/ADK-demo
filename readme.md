@@ -1,4 +1,8 @@
-# Weather & Search Agent Tutorial
+# ADK Testing Repository
+
+The purpose of this repository is to test Google's Agent Development Kit and explore tool integrations.
+
+## Weather & Search Agent Demo
 
 A simple demonstration agent built with the Agent Development Kit (ADK) that can provide weather information and web search results.
 
