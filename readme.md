@@ -1,6 +1,40 @@
 # ADK Testing Repository
 
-The purpose of this repository is to test Google's Agent Development Kit and explore tool integrations.
+The purpose of this repository is to test Google's Agent Development Kit and explore tool integrations in a multi-agent architecture.
+
+## Multi-Agent Orchestration System
+
+This repository demonstrates an orchestrated multi-agent system where a coordinator agent manages specialized sub-agents. The main focus is on:
+
+- **Coordinator-based Orchestration:** Building a system where a central agent delegates tasks to specialized agents
+- **Multi-Agent Architecture:** Demonstrating how multiple agents can work together through delegation
+- **Tool Development & Testing:** Creating a framework for developing and testing agentic tools
+- **API Integrations:** Connecting agents to external services like weather data and web search
+
+The guardrail implementations (block_keyword_guardrail, block_tool_guardrail) are sample agents for future reference and development.
+
+## Core Components
+
+### Coordinator Agent
+
+The main agent that:
+- Manages conversation flow
+- Delegates tasks to specialized sub-agents
+- Integrates external API tools
+- Maintains conversation context
+
+### Sub-Agents
+
+- **Greeting Agent:** Handles user greetings
+- **Farewell Agent:** Manages conversation closings
+- **Weather Agent:** Provides weather information
+
+### Tool Integrations
+
+The system demonstrates how to build and integrate various tools for agents:
+- **Weather API Tools:** Real-time weather data retrieval
+- **Web Search Tools:** Up-to-date information retrieval
+- **State Management Tools:** Maintaining user preferences
 
 ## Weather & Search Agent Demo
 
