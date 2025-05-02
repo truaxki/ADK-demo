@@ -1,0 +1,40 @@
+{
+  "London": {
+    "status": "success",
+    "city_name": "London",
+    "country": "GB",
+    "temperature": 15.22,
+    "condition": "few clouds",
+    "timestamp": "2025-05-01 21:25:00"
+  },
+  "New York": {
+    "status": "success",
+    "city_name": "New York",
+    "country": "US",
+    "temperature": 14.9,
+    "condition": "overcast clouds",
+    "timestamp": "2025-05-01 21:25:00"
+  },
+  "Tokyo": {
+    "status": "success",
+    "city_name": "Tokyo",
+    "country": "JP",
+    "temperature": 17.59,
+    "condition": "light intensity shower rain",
+    "timestamp": "2025-05-01 21:25:01"
+  },
+  "Paris": {
+    "status": "success",
+    "city_name": "Paris",
+    "country": "FR",
+    "temperature": 16.62,
+    "condition": "clear sky",
+    "timestamp": "2025-05-01 21:25:01"
+  },
+  "Charleston, SC": {
+    "status": "error",
+    "error_code": 404,
+    "error_message": "city not found",
+    "timestamp": "2025-05-01 21:25:01"
+  }
+}

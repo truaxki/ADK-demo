@@ -1,10 +1,11 @@
 # Multi-Agent System with Voice Support
 
-This project demonstrates a multi-agent system built with Google's Agent Development Kit (ADK) that supports voice-to-voice interactions.
+This project demonstrates a multi-agent system built with Google's Agent Development Kit (ADK) that supports voice-to-voice interactions and uses real APIs.
 
 ## Features
 
 - **Coordinator Agent**: Routes requests to specialized sub-agents
+- **Real Weather API**: Get current weather information using OpenWeatherMap API
 - **SERPAPI Web Search**: Search the web using SERPAPI
 - **Weather Information**: Get weather reports with temperature unit conversion
 - **Greeting & Farewell**: Handle conversation openings and closings
@@ -14,7 +15,34 @@ This project demonstrates a multi-agent system built with Google's Agent Develop
 
 - Python 3.11+
 - ADK Tools (`pip install adktools`)
-- SERPAPI API Key (set as environment variable)
+- API Keys (see below)
+
+## API Keys Setup
+
+### OpenWeatherMap API (for weather data)
+1. Create a free account at [OpenWeatherMap](https://home.openweathermap.org/users/sign_up)
+2. Navigate to your [API keys](https://home.openweathermap.org/api_keys) page
+3. Create a new API key or use your existing one
+4. Set it as an environment variable:
+   ```
+   # Windows
+   set OPENWEATHERMAP_API_KEY=your_api_key_here
+   
+   # macOS/Linux
+   export OPENWEATHERMAP_API_KEY=your_api_key_here
+   ```
+
+### SERPAPI (for web search)
+1. Create an account at [SERPAPI](https://serpapi.com/users/sign_up)
+2. Get your API key from the dashboard
+3. Set it as an environment variable:
+   ```
+   # Windows
+   set SERPAPI_KEY=your_api_key_here
+   
+   # macOS/Linux
+   export SERPAPI_KEY=your_api_key_here
+   ```
 
 ## Installation
 
@@ -23,10 +51,7 @@ This project demonstrates a multi-agent system built with Google's Agent Develop
    pip install -e .
    ```
 
-2. Set your SERPAPI API key as an environment variable:
-   ```
-   export SERPAPI_KEY=your_api_key_here
-   ```
+2. Set your API keys as environment variables (see above)
 
 ## Running the Agent with Voice Support
 
@@ -56,17 +81,27 @@ This is all handled automatically by the ADK web interface when you use `adk web
 
 The system consists of:
 - **Coordinator Agent**: Main entry point that delegates to specialized agents
-- **Weather Agent**: Handles weather queries and unit preferences
+- **Weather Agent**: Handles weather queries and unit preferences using real OpenWeatherMap data
 - **Greeting Agent**: Processes greetings and salutations
 - **Farewell Agent**: Manages conversation closings
 
 ## Custom Tools
 
 - `search_web`: Searches the web using SERPAPI
-- `get_weather_stateful`: Provides weather information with user preference support
+- `get_weather_stateful`: Provides real-time weather information from OpenWeatherMap API
 - `set_temperature_unit`: Updates user preferences for temperature units
 - `say_hello`: Generates greetings
 - `say_goodbye`: Creates farewell messages
+
+## Project Structure
+
+The code is organized in a modular way:
+- `agent.py` - Main coordinator agent definition and sub-agents
+- `utils/` - Modular utility functions:
+  - `weather.py` - OpenWeatherMap API integration
+  - `search.py` - Web search functionality
+  - `preferences.py` - User preference management
+  - `conversation.py` - Greeting and farewell handlers
 
 ## License
 

@@ -13,6 +13,10 @@
 # limitations under the License.
 
 # @title Import necessary libraries
+import os
+import sys
+from pathlib import Path
+
 from google.adk.agents import Agent
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
@@ -30,8 +34,36 @@ from .utils import (
     search_web  # Import the new SERPAPI search function
 )
 
-APP_NAME="google_search_agent"
-USER_ID="Kirk"
+# Load environment variables from .env file if it exists
+def load_dotenv():
+    env_path = Path('.') / '.env'
+    if env_path.exists():
+        print("Loading environment variables from .env file...")
+        with open(env_path) as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith('#'):
+                    continue
+                key, value = line.split('=', 1)
+                os.environ[key] = value
+        print("Environment variables loaded successfully.")
+    else:
+        print("No .env file found. Using system environment variables.")
+
+# Load environment variables
+load_dotenv()
+
+# Check for required API keys
+if not os.getenv("OPENWEATHERMAP_API_KEY"):
+    print("⚠️ Warning: OPENWEATHERMAP_API_KEY not set. Weather features will not work properly.")
+    print("    Run 'python -m coordinator_agent.setup_env' to set up your API keys.")
+
+if not os.getenv("SERPAPI_KEY"):
+    print("⚠️ Warning: SERPAPI_KEY not set. Web search features will not work properly.")
+    print("    Run 'python -m coordinator_agent.setup_env' to set up your API keys.")
+
+APP_NAME="coordinator_agent"
+USER_ID="User"
 SESSION_ID="1234"
 
 MODEL_GEMINI_2_0_FLASH = "gemini-2.0-flash"
@@ -82,8 +114,13 @@ try:
     weather_agent = Agent(
         name="weather_agent",
         model=LiteLlm(model=MODEL_GPT_4O_MINI),
-        description="Agent to provide weather information.",
-        instruction="You are the Weather Agent. Your ONLY task is to provide weather information.",
+        description="Agent to provide real-time weather information from OpenWeatherMap API.",
+        instruction="You are the Weather Agent. Your task is to provide real-time weather information "
+                   "using the OpenWeatherMap API through the 'get_weather_stateful' tool. "
+                   "You can respond to queries about current weather conditions in any city worldwide. "
+                   "Users can also set their temperature unit preference (Celsius/Fahrenheit) using "
+                   "the 'set_temperature_unit' tool, which you should use when they express such a preference. "
+                   "Always provide weather information in a friendly, conversational tone.",
         tools=[get_weather_stateful, set_temperature_unit],
     )
     print(f"✅ Agent '{weather_agent.name}' created using model '{weather_agent.model}'.")
@@ -97,13 +134,14 @@ except Exception as e:
 root_agent = Agent(
     name="coordinator_agent",
     model=LiteLlm(model=MODEL_GPT_4O_MINI),  # Using OpenAI model for coordination
-    description="Main coordinator agent that delegates tasks to specialized sub-agents.",
+    description="Main coordinator agent that delegates tasks to specialized sub-agents and provides real-time information.",
     instruction="You are a coordinator agent that manages specialized sub-agents. "
                "For web searches and information lookups, use the 'search_web' function directly. "
-               "For weather information, delegate to the 'weather_agent'. "
+               "For real-time weather information using OpenWeatherMap API, delegate to the 'weather_agent'. "
                "For greetings, delegate to 'greeting_agent'. "
                "For farewells, delegate to 'farewell_agent'. "
-               "When speaking to users, use natural, conversational language that works well for both text and voice interactions.",
+               "When speaking to users, use natural, conversational language that works well for both text and voice interactions. "
+               "Emphasize to users that you provide real-time weather data when they ask about the weather.",
     tools=[search_web],  # Custom search tool that uses SERPAPI
     sub_agents=[greeting_agent, farewell_agent, weather_agent],
     output_key="last_response"

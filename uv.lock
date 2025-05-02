@@ -14,6 +14,7 @@ dependencies = [
     { name = "google-adk" },
     { name = "litellm" },
     { name = "pip" },
+    { name = "requests" },
 ]
 
 [package.metadata]
@@ -22,6 +23,7 @@ requires-dist = [
     { name = "google-adk", specifier = ">=0.1.0" },
     { name = "litellm", specifier = "==1.65.1" },
     { name = "pip", specifier = ">=25.0.1" },
+    { name = "requests", specifier = ">=2.31.0" },
 ]
 
 [[package]]
