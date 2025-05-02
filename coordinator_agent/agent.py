@@ -34,11 +34,15 @@ from .utils import (
     search_web  # Import the new SERPAPI search function
 )
 
-# Load environment variables from .env file if it exists
-def load_dotenv():
+# Simple .env file loading
+try:
+    from dotenv import load_dotenv
+    load_dotenv()  # Load from .env file if present
+    print("Environment variables loaded.")
+except ImportError:
+    # Fallback for manual .env loading if python-dotenv is not installed
     env_path = Path('.') / '.env'
     if env_path.exists():
-        print("Loading environment variables from .env file...")
         with open(env_path) as f:
             for line in f:
                 line = line.strip()
@@ -46,21 +50,14 @@ def load_dotenv():
                     continue
                 key, value = line.split('=', 1)
                 os.environ[key] = value
-        print("Environment variables loaded successfully.")
-    else:
-        print("No .env file found. Using system environment variables.")
-
-# Load environment variables
-load_dotenv()
+        print("Environment variables loaded manually.")
 
 # Check for required API keys
 if not os.getenv("OPENWEATHERMAP_API_KEY"):
-    print("⚠️ Warning: OPENWEATHERMAP_API_KEY not set. Weather features will not work properly.")
-    print("    Run 'python -m coordinator_agent.setup_env' to set up your API keys.")
-
+    print("⚠️ Warning: OPENWEATHERMAP_API_KEY not set. Weather features will not work.")
+    
 if not os.getenv("SERPAPI_KEY"):
-    print("⚠️ Warning: SERPAPI_KEY not set. Web search features will not work properly.")
-    print("    Run 'python -m coordinator_agent.setup_env' to set up your API keys.")
+    print("⚠️ Warning: SERPAPI_KEY not set. Web search features will not work.")
 
 APP_NAME="coordinator_agent"
 USER_ID="User"
