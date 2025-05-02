@@ -71,8 +71,8 @@ greeting_agent = None
 try:
     greeting_agent = Agent(
         # Using a potentially different/cheaper model for a simple task
-        # model = MODEL_GEMINI_2_0_FLASH,
-        model=LiteLlm(model=MODEL_GPT_4O_MINI), # If you would like to experiment with other models 
+        model = "gemini-2.0-flash-exp",  # Use Gemini model that supports Live API for voice streaming
+        # model=LiteLlm(model=MODEL_GPT_4O_MINI), # If you would like to experiment with other models 
         name="greeting_agent",
         instruction="You are the Greeting Agent. Your ONLY task is to provide a friendly greeting to the user. "
                     "Use the 'say_hello' tool to generate the greeting. "
@@ -155,7 +155,7 @@ root_agent = Agent(
                "When speaking to users, use natural, conversational language that works well for both text and voice interactions. "
                "Emphasize to users that you provide real-time weather data when they ask about the weather.",
     tools=[search_web],  # Custom search tool that uses SERPAPI
-    sub_agents=[greeting_agent, farewell_agent, weather_agent, reasoning_agent],
+    sub_agents=[greeting_agent, farewell_agent, weather_agent],
     output_key="last_response"
 )
 
