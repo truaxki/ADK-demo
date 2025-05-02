@@ -10,6 +10,7 @@ This project demonstrates a multi-agent system built with Google's Agent Develop
 - **Weather Information**: Get weather reports with temperature unit conversion
 - **Greeting & Farewell**: Handle conversation openings and closings
 - **Voice-to-Voice**: Support for natural spoken conversations
+- **Proper Delegation**: Coordinator correctly delegates to specialized sub-agents using the '@agent_name' format
 
 ## Prerequisites
 
@@ -80,6 +81,7 @@ This is all handled automatically by the ADK web interface when you use `adk web
 ## Agent Structure
 
 The system consists of:
+- **Reasoning Agnet**: Runs o3 mini reasoning model
 - **Coordinator Agent**: Main entry point that delegates to specialized agents
 - **Weather Agent**: Handles weather queries and unit preferences using real OpenWeatherMap data
 - **Greeting Agent**: Processes greetings and salutations
@@ -102,6 +104,10 @@ The code is organized in a modular way:
   - `search.py` - Web search functionality
   - `preferences.py` - User preference management
   - `conversation.py` - Greeting and farewell handlers
+
+## Troubleshooting
+
+If you encounter an error like `Function weather_agent is not found in the tools_dict`, make sure the coordinator agent is properly delegating to sub-agents using the '@agent_name' format instead of trying to call functions directly. This error occurs when the LLM tries to call a tool with the same name as a sub-agent instead of delegating to that sub-agent.
 
 ## License
 

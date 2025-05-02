@@ -85,6 +85,20 @@ try:
 except Exception as e:
     print(f"❌ Could not create Greeting agent. Check API Key ({greeting_agent.model}). Error: {e}")
 
+# --- Reasoning Agent ---
+reasoning_agent = None
+try:
+    reasoning_agent = Agent(
+        name="reasoning_agent",
+        model=LiteLlm(model="openai/o3-mini-2025-01-31"),
+        description="I reason with the user. Your model is openai/o3-mini-2025-01-31.",
+        instruction="You are a helpful assistant, you will reason with the user and help them with their questions."
+    )   
+    print(f"✅ Agent '{reasoning_agent.name}' created using model '{reasoning_agent.model}'.")
+except Exception as e:
+    print(f"❌ Could not create Reasoning agent. Check API Key ({reasoning_agent.model}). Error: {e}")
+
+
 # --- Farewell Agent ---
 farewell_agent = None
 try:
@@ -137,10 +151,11 @@ root_agent = Agent(
                "For real-time weather information using OpenWeatherMap API, delegate to the 'weather_agent'. "
                "For greetings, delegate to 'greeting_agent'. "
                "For farewells, delegate to 'farewell_agent'. "
+               "For reasoning, delegate to 'reasoning_agent'. "
                "When speaking to users, use natural, conversational language that works well for both text and voice interactions. "
                "Emphasize to users that you provide real-time weather data when they ask about the weather.",
     tools=[search_web],  # Custom search tool that uses SERPAPI
-    sub_agents=[greeting_agent, farewell_agent, weather_agent],
+    sub_agents=[greeting_agent, farewell_agent, weather_agent, reasoning_agent],
     output_key="last_response"
 )
 
