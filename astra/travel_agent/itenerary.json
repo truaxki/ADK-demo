@@ -1,0 +1,334 @@
+{
+  "itinerary": {
+    "travel_dates": {
+      "start": "2025-06-15",
+      "end": "2025-07-15"
+    },
+    "items": [
+      {
+        "date": "2025-06-15",
+        "category": "flight",
+        "details": {
+          "from": "Charleston (CHS)",
+          "to": ["Orlando (MCO)", "Recife (REC)"],
+          "notes": "Connect via Orlando before continuing on to Recife"
+        }
+      },
+      {
+        "date": "2025-06-16",
+        "category": "arrival",
+        "details": {
+          "location": "Recife (REC)",
+          "time": "07:00"
+        }
+      },
+      {
+        "date": "2025-06-17",
+        "category": "activity",
+        "details": {
+          "name": "Praia de Boa Viagem",
+          "type": "beach",
+          "link": "https://maps.app.goo.gl/tfd6yZM5LPSvrtiW7"
+        }
+      },
+      {
+        "date": "2025-06-18",
+        "category": "activity",
+        "details": {
+          "name": "Ricardo Brennand Museum",
+          "type": "museum"
+        }
+      },
+      {
+        "date": "2025-06-19",
+        "category": "activity",
+        "details": {
+          "name": "Mercado São José",
+          "type": "market"
+        }
+      },
+      {
+        "date": "2025-06-20",
+        "category": "event",
+        "details": {
+          "name": "Lorena's Birthday Celebration",
+          "suggestion": "Catamaran tour (Passeio de catamarã)"
+        }
+      },
+      {
+        "date": "2025-06-21",
+        "category": "activity",
+        "details": {
+          "morning": "Mercado da Boa Vista",
+          "evening": "Night visit to Olinda"
+        }
+      },
+      {
+        "date": "2025-06-22",
+        "category": "activity",
+        "details": {
+          "morning": "Feirinha Recife Antigo",
+          "afternoon": "Walk along Rua da Aurora"
+        }
+      },
+      {
+        "date": "2025-06-23",
+        "category": "transfer",
+        "details": {
+          "from": "Recife",
+          "to": "Porto de Galinhas"
+        }
+      },
+      {
+        "date": "2025-06-23",
+        "category": "activity",
+        "details": {
+          "day": "Porto de Galinhas Day 1",
+          "itinerary": [
+            "Snorkel in the natural pools at Praia de Porto de Galinhas (jangada raft tour)",
+            "Lunch at Beijupirá (seafood specialties)",
+            "Relax at Muro Alto Beach",
+            "Evening stroll & sunset along the main street"
+          ]
+        }
+      },
+      {
+        "date": "2025-06-24",
+        "category": "activity",
+        "details": {
+          "day": "Porto de Galinhas Day 2",
+          "itinerary": [
+            "Buggy tour of Praia do Cupe and Maracaipe Beach",
+            "Lunch at a casual beachfront eatery near Maracaipe",
+            "Visit the Hippocampus Project (sea horse conservation)",
+            "Dinner at a local pousada"
+          ]
+        }
+      },
+      {
+        "date": "2025-06-25",
+        "category": "activity",
+        "details": {
+          "day": "Porto de Galinhas Day 3",
+          "itinerary": [
+            "Poolside relaxation at accommodation",
+            "Lunch at a nearby café",
+            "Visit Mercado de Artesanato for souvenirs",
+            "Depart Porto de Galinhas"
+          ]
+        }
+      },
+      {
+        "date": "2025-06-27",
+        "category": "transfer",
+        "details": {
+          "from": "Porto de Galinhas",
+          "to": "Maragogi"
+        }
+      },
+      {
+        "date": "2025-06-27",
+        "category": "activity",
+        "details": {
+          "day": "Maragogi Day 1",
+          "itinerary": [
+            "Boat tour to Galés natural pools for snorkeling",
+            "Lunch at a local seafood restaurant",
+            "Relax at Maragogi Beach",
+            "Evening shoreline stroll"
+          ]
+        }
+      },
+      {
+        "date": "2025-06-28",
+        "category": "activity",
+        "details": {
+          "day": "Maragogi Day 2",
+          "itinerary": [
+            "Visit Antunes Beach",
+            "Guided tour of São Bento Monastery",
+            "Lunch in Japaratinga (regional specialties)",
+            "Buggy ride across the Maragogi dunes for sunset views"
+          ]
+        }
+      },
+      {
+        "date": "2025-06-29",
+        "category": "activity",
+        "details": {
+          "day": "Maragogi Day 3",
+          "itinerary": [
+            "Kayak through mangrove canals or paddleboard at Barra Grande Beach",
+            "Relax at Xaréu Beach or visit Maragogi Aquarium",
+            "Beach picnic with tropical fruits",
+            "Live music at a beachfront bar"
+          ]
+        }
+      },
+      {
+        "date": "2025-06-30",
+        "category": "transfer",
+        "details": {
+          "from": "Maragogi",
+          "to": "Recife"
+        }
+      },
+      {
+        "date": "2025-07-02",
+        "category": "flight",
+        "details": {
+          "from": "Recife (REC)",
+          "to": "Fernando de Noronha (FEN)",
+          "departure": "08:05",
+          "arrival": "10:30"
+        }
+      },
+      {
+        "date": "2025-07-03",
+        "category": "activity",
+        "details": {
+          "name": "Ilha Tour",
+          "provider": "Local operator (e.g., Emnoronha)",
+          "notes": "Full‑island boat circuit"
+        }
+      },
+      {
+        "date": "2025-07-04",
+        "category": "activity",
+        "details": {
+          "name": "Entardecer VIP",
+          "type": "Sunset boat experience"
+        }
+      },
+      {
+        "date": "2025-07-05",
+        "category": "activity",
+        "details": {
+          "name": "Canoa Havaiana Tour",
+          "evening": "Sunset viewpoint at Mirante do Boldró"
+        }
+      },
+      {
+        "date": "2025-07-06",
+        "category": "activity",
+        "details": {
+          "itinerary": [
+            "Scuba diving (Mergulho de cilindro)",
+            "Visit Forte Nossa Senhora dos Remédios & Sunday pagode"
+          ]
+        }
+      },
+      {
+        "date": "2025-07-07",
+        "category": "activity",
+        "details": {
+          "name": "Rota das Piscinas Naturais",
+          "notes": "Natural tidal pool route by boat"
+        }
+      },
+      {
+        "date": "2025-07-08",
+        "category": "flight",
+        "details": {
+          "from": "Fernando de Noronha (FEN)",
+          "to": "Recife (REC)",
+          "departure": "15:10"
+        }
+      },
+      {
+        "date": "2025-07-09",
+        "category": "flight",
+        "details": {
+          "from": "Recife (REC)",
+          "to": "Rio de Janeiro (GIG)"
+        }
+      },
+      {
+        "date": "2025-07-09",
+        "category": "activity",
+        "details": {
+          "day": "Rio Day 1",
+          "itinerary": [
+            "08:00 AM – Christ the Redeemer via Corcovado train or van",
+            "Parque Lage",
+            "Lunch at Aprazível",
+            "Explore Santa Teresa & Parque das Ruínas",
+            "Sunset at Sugarloaf Mountain & cocktails at Clássico Sunset Urca"
+          ]
+        }
+      },
+      {
+        "date": "2025-07-10",
+        "category": "activity",
+        "details": {
+          "day": "Rio Day 2",
+          "itinerary": [
+            "Copacabana Beach (Posto 5)",
+            "Rio de Janeiro Botanical Garden",
+            "Lunch at Bar do Mineiro or Terra Brasilis",
+            "Escadaria Selarón",
+            "Lapa nightlife (samba bars)"
+          ]
+        }
+      },
+      {
+        "date": "2025-07-11",
+        "category": "activity",
+        "details": {
+          "day": "Rio Day 3",
+          "itinerary": [
+            "Pedra Bonita hike",
+            "Lunch at Xian Rio",
+            "Ipanema Beach (Posto 9)",
+            "Sunset at Arpoador",
+            "Dinner at Marine Resto"
+          ]
+        }
+      },
+      {
+        "date": "2025-07-12",
+        "category": "activity",
+        "details": {
+          "day": "Rio Day 4",
+          "itinerary": [
+            "Museum of Tomorrow",
+            "São Bento Monastery & Royal Portuguese Library",
+            "Lunch at Confeitaria Colombo",
+            "Pedra do Sal (samba spot)",
+            "Dinner at Albamar"
+          ]
+        }
+      },
+      {
+        "date": "2025-07-13",
+        "category": "activity",
+        "details": {
+          "day": "Rio Day 5",
+          "itinerary": [
+            "Ipanema Beach leisure",
+            "Brunch at Plage Café",
+            "Local food tour (coxinha, pão de queijo, queijo coalho)"
+          ]
+        }
+      },
+      {
+        "date": "2025-07-14",
+        "category": "transfer",
+        "details": {
+          "from": "Rio de Janeiro",
+          "to": "Cruzeiro",
+          "mode": "Car"
+        }
+      },
+      {
+        "date": "2025-07-15",
+        "category": "transfer",
+        "details": {
+          "from": "Cruzeiro",
+          "to": "São Paulo",
+          "notes": "Drive then flight back to Charleston (CHS)"
+        }
+      }
+    ]
+  }
+}

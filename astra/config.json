@@ -1,11 +1,48 @@
 {
   "user_profile": {
     "name": "Kirk Truax",
+    "role": "Data Science Graduate Student",
+    "location": "Charleston, SC",
+    "contact": {
+      "email": "truaxk1@g.cofc.edu",
+      "phone": "661-733-7464"
+    },
     "preferences": {
       "language": "English",
-      "units": "English",
-      "interests": ["technology", "travel", "science"]
+      "units": "Imperial",
+      "timezone": "America/New_York",
+      "communication_style": "concise",
+      "response_format": "unstructured"
     },
-    "location": "Charleston, SC"
+    "interests": [
+      "technology",
+      "AI agents",
+      "multi-agent systems",
+      "travel",
+      "science",
+      "data engineering",
+      "cybersecurity",
+      "machine learning"
+    ],
+    "goals": {
+      "short_term": "Optimize Astra's performance by adding more agents and tools",
+      "long_term": "Produce a multi-agent system that can handle complex tasks and provide a personalized experience for the user"
+    },
+    "skills": {
+      "programming_languages": ["Python", "SQL", "JavaScript", "R"],
+      "tools": ["Neo4j", "SQLite", "pgvector", "Docker", "RStudio"],
+      "cloud_services": ["GCP"],
+      "model_frameworks": ["Model Context Protocol", "Agent Development Kit"]
+    },
+    "projects": [
+      "Astra Multi‑Agent Assistant",
+      "Asymetric Stress Testing Tool",
+      "Azure Medical Database"
+    ],
+    "preferred_models": [
+      "gpt-4o-mini",
+      "Claude 3.7 Sonnet",
+      "DeepSeek-R1"
+    ]
   }
-} 
+}

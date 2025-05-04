@@ -21,6 +21,7 @@ from .shared_libraries.search_web import search_web
 
 # Import sub-agents
 from .weather_agent.agent import weather_agent
+from .travel_agent.agent import travel_concierge_agent, user_profile as travel_user_profile, itinerary as travel_itinerary
 
 # Define session variables
 APP_NAME = "astra"
@@ -64,7 +65,7 @@ root_agent = Agent(
     description="Astra is a personal AI assistant that helps users with information and tasks.",
     instruction=ASTRA_AGENT_INSTR.format(user_profile=json.dumps(user_profile), _time=current_time),
     tools=[search_web, AgentTool(agent=weather_agent)],
-    # sub_agents=[weather_agent],
+    sub_agents=[travel_concierge_agent, weather_agent],
 )
 
 # Session and Runner
