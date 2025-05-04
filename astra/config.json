@@ -1,0 +1,11 @@
+{
+  "user_profile": {
+    "name": "Kirk Truax",
+    "preferences": {
+      "language": "English",
+      "units": "English",
+      "interests": ["technology", "travel", "science"]
+    },
+    "location": "Charleston, SC"
+  }
+} 

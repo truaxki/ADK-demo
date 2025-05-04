@@ -1,4 +1,51 @@
-# Astra - Personal AI Agent Framework
+# Astra - Personal AI Assistant
+
+Astra is a personal AI assistant built with the Google Agent Development Kit (ADK).
+
+## Configuration
+
+Astra uses environment variables for configuration. You can set these in a `.env` file in the root directory. Here are the available configuration options:
+
+### Session Configuration
+
+```
+# Application identification
+ASTRA_APP_NAME=astra
+ASTRA_USER_ID=your_name
+ASTRA_SESSION_ID=development
+
+# Default model to use
+ASTRA_DEFAULT_MODEL=openai/gpt-4o-mini
+
+# Default preferences
+ASTRA_DEFAULT_TEMPERATURE_UNIT=Fahrenheit
+```
+
+### API Keys
+
+```
+# API keys for various services
+OPENWEATHERMAP_API_KEY=your_openweathermap_api_key
+SERPER_API_KEY=your_serper_api_key
+```
+
+## Sub-agents
+
+Astra includes several specialized sub-agents:
+
+### Weather Agent
+
+Provides real-time weather information. [See details](./weather_agent/README.md).
+
+## Development
+
+### Adding New Configuration Values
+
+To add new configuration values:
+
+1. Add them to the `.env` file
+2. Update the `config.py` file to include the new values
+3. Import the values where needed
 
 ## Overview
 Astra is a personal agent framework that connects users with specialized sub-agents designed to handle specific domains and tasks. Acting as a coordinator, Astra routes user requests to the appropriate specialized agents based on the nature of the task.
