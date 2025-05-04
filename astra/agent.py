@@ -11,6 +11,7 @@ from google.adk.models.lite_llm import LiteLlm
 
 # Import prompt instructions
 from .prompt import ASTRA_BASIC_TEST_INSTR
+from .shared_libraries.search_web import search_web
 
 # Configure model constants
 MODEL_GEMINI_FLASH = "gemini-2.0-flash"
@@ -29,6 +30,6 @@ root_agent = Agent(
     model=LiteLlm(model=MODEL_GPT_4_MINI),
     description="Astra is a personal AI assistant that helps users with information and tasks.",
     instruction=ASTRA_BASIC_TEST_INSTR,
-    tools=[],
+    tools=[search_web],
     sub_agents=[],
 )

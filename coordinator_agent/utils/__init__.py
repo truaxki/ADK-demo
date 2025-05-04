@@ -16,7 +16,7 @@
 from .weather import get_weather_stateful
 from .conversation import say_hello, say_goodbye
 from .preferences import set_temperature_unit
-from .search import search_web
+from ...astra.shared_libraries.search_web import search_web
 
 # Export all functions
 __all__ = [
