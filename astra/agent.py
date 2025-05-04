@@ -13,6 +13,9 @@ from google.adk.models.lite_llm import LiteLlm
 from .prompt import ASTRA_BASIC_TEST_INSTR
 from .shared_libraries.search_web import search_web
 
+# Import sub-agents
+from .weather_agent.agent import weather_agent
+
 # Configure model constants
 MODEL_GEMINI_FLASH = "gemini-2.0-flash"
 MODEL_GPT_4_MINI = "openai/gpt-4o-mini"
@@ -31,5 +34,5 @@ root_agent = Agent(
     description="Astra is a personal AI assistant that helps users with information and tasks.",
     instruction=ASTRA_BASIC_TEST_INSTR,
     tools=[search_web],
-    sub_agents=[],
+    sub_agents=[weather_agent],
 )
