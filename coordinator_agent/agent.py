@@ -35,13 +35,7 @@ from .utils import (
 )
 
 # Import sub-agents from the subagents package
-from .subagents import (
-    greeting_agent,
-    farewell_agent,
-    weather_agent,
-    reasoning_agent,
-    travel_agent
-)
+from .subagent_name.agent import subagent
 
 # Simple .env file loading
 try:

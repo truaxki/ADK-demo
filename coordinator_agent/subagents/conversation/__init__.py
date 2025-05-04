@@ -12,11 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This file marks the subagents directory as a Python package
-# It allows the agents to be imported with: from coordinator_agent.subagents import *
-
-# Import conversation agents from the conversation subfolder
-from .conversation import greeting_agent, farewell_agent
-from .weather_agent import weather_agent
-from .reasoning_agent import reasoning_agent
-from .travel_agent import travel_agent 
+# Export the greeting_agent and farewell_agent 
+from .greeting_agent import greeting_agent
+from .farewell_agent import farewell_agent 

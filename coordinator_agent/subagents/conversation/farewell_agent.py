@@ -15,7 +15,7 @@
 import os
 from google.adk.agents import Agent
 from google.adk.models.lite_llm import LiteLlm
-from ..utils import say_goodbye
+from ...utils import say_goodbye
 
 # Constants
 MODEL_GEMINI_2_0_FLASH = "gemini-2.0-flash"

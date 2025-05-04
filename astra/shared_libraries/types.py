@@ -12,11 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# This file marks the subagents directory as a Python package
-# It allows the agents to be imported with: from coordinator_agent.subagents import *
+"""Type definitions for astra agents."""
 
-# Import conversation agents from the conversation subfolder
-from .conversation import greeting_agent, farewell_agent
-from .weather_agent import weather_agent
-from .reasoning_agent import reasoning_agent
-from .travel_agent import travel_agent 
+from google.protobuf import json_format
+
+json_response_config = {
+    "response_mime_type": "application/json",
+}
+
+class ResearchDetail:
+    topic: str
+    information: str
+    sources: list[str]
+
+class ResearchResults:
+    research_results: dict = {
+        "summary": str,
+        "details": list[ResearchDetail],
+        "confidence_score": float
+    }
+
+class ExecutionResults:
+    execution_results: dict = {
+        "status": str,
+        "actions_taken": list[str],
+        "output": str,
+        "next_steps": list[str]
+    } 

@@ -1,0 +1,18 @@
+# Astra Instructions
+
+This file contains instructions for using and configuring Astra, the autonomous agent system.
+
+## Basic Usage
+- Configure your agent's behavior by editing the configuration files
+- Provide clear objectives for optimal agent performance
+- Monitor agent activities through the logging system
+
+## Advanced Configuration
+- Customize agent strategies by modifying the prompt templates
+- Adjust reasoning parameters to control decision-making processes
+- Implement domain-specific knowledge to enhance agent capabilities
+
+## Best Practices
+- Start with simple, well-defined tasks
+- Gradually increase complexity as you become familiar with the system
+- Provide feedback to help improve agent learning 

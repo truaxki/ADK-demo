@@ -14,7 +14,7 @@
 
 import os
 from google.adk.agents import Agent
-from ..utils import say_hello
+from ...utils import say_hello
 
 # Constants
 MODEL_GEMINI_2_0_FLASH = "gemini-2.0-flash"
