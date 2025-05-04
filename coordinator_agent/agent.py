@@ -34,6 +34,15 @@ from .utils import (
     search_web  # Import the new SERPAPI search function
 )
 
+# Import sub-agents from the subagents package
+from .subagents import (
+    greeting_agent,
+    farewell_agent,
+    weather_agent,
+    reasoning_agent,
+    travel_agent
+)
+
 # Simple .env file loading
 try:
     from dotenv import load_dotenv
@@ -66,79 +75,6 @@ SESSION_ID="1234"
 MODEL_GEMINI_2_0_FLASH = "gemini-2.0-flash"
 MODEL_GPT_4O_MINI = "openai/gpt-4o-mini"
 
-# --- Greeting Agent ---
-greeting_agent = None
-try:
-    greeting_agent = Agent(
-        # Using a potentially different/cheaper model for a simple task
-        model = "gemini-2.0-flash-exp",  # Use Gemini model that supports Live API for voice streaming
-        # model=LiteLlm(model=MODEL_GPT_4O_MINI), # If you would like to experiment with other models 
-        name="greeting_agent",
-        instruction="You are the Greeting Agent. Your ONLY task is to provide a friendly greeting to the user. "
-                    "Use the 'say_hello' tool to generate the greeting. "
-                    "If the user provides their name, make sure to pass it to the tool. "
-                    "Do not engage in any other conversation or tasks.",
-        description="Handles simple greetings and hellos using the 'say_hello' tool.", # Crucial for delegation
-        tools=[say_hello],
-    )
-    print(f"✅ Agent '{greeting_agent.name}' created using model '{greeting_agent.model}'.")
-except Exception as e:
-    print(f"❌ Could not create Greeting agent. Check API Key ({greeting_agent.model}). Error: {e}")
-
-# --- Reasoning Agent ---
-reasoning_agent = None
-try:
-    reasoning_agent = Agent(
-        name="reasoning_agent",
-        model=LiteLlm(model="openai/o3-mini-2025-01-31"),
-        description="I reason with the user. Your model is openai/o3-mini-2025-01-31.",
-        instruction="You are a helpful assistant, you will reason with the user and help them with their questions."
-    )   
-    print(f"✅ Agent '{reasoning_agent.name}' created using model '{reasoning_agent.model}'.")
-except Exception as e:
-    print(f"❌ Could not create Reasoning agent. Check API Key ({reasoning_agent.model}). Error: {e}")
-
-
-# --- Farewell Agent ---
-farewell_agent = None
-try:
-    farewell_agent = Agent(
-        # Can use the same or a different model
-        # model = MODEL_GEMINI_2_0_FLASH,
-        model=LiteLlm(model=MODEL_GPT_4O_MINI), # If you would like to experiment with other models
-        name="farewell_agent",
-        instruction="You are the Farewell Agent. Your ONLY task is to provide a polite goodbye message. "
-                    "Use the 'say_goodbye' tool when the user indicates they are leaving or ending the conversation "
-                    "(e.g., using words like 'bye', 'goodbye', 'thanks bye', 'see you'). "
-                    "Do not perform any other actions.",
-        description="Handles simple farewells and goodbyes using the 'say_goodbye' tool.", # Crucial for delegation
-        tools=[say_goodbye],
-    )
-    print(f"✅ Agent '{farewell_agent.name}' created using model '{farewell_agent.model}'.")
-except Exception as e:
-    print(f"❌ Could not create Farewell agent. Check API Key ({farewell_agent.model}). Error: {e}")
-    
-    
-# --- Weather Agent ---
-weather_agent = None
-try:
-    weather_agent = Agent(
-        name="weather_agent",
-        model=LiteLlm(model=MODEL_GPT_4O_MINI),
-        description="Agent to provide real-time weather information from OpenWeatherMap API.",
-        instruction="You are the Weather Agent. Your task is to provide real-time weather information "
-                   "using the OpenWeatherMap API through the 'get_weather_stateful' tool. "
-                   "You can respond to queries about current weather conditions in any city worldwide. "
-                   "Users can also set their temperature unit preference (Celsius/Fahrenheit) using "
-                   "the 'set_temperature_unit' tool, which you should use when they express such a preference. "
-                   "Always provide weather information in a friendly, conversational tone.",
-        tools=[get_weather_stateful, set_temperature_unit],
-    )
-    print(f"✅ Agent '{weather_agent.name}' created using model '{weather_agent.model}'.")
-except Exception as e:
-    print(f"❌ Could not create Weather agent. Check API Key ({weather_agent.model}). Error: {e}")  
-
-
 # --- Root Agent ---
 # No built-in tools, using our custom SERPAPI search function instead
 # This agent supports voice-to-voice interactions when run with 'adk web'
@@ -152,10 +88,13 @@ root_agent = Agent(
                "For greetings, delegate to 'greeting_agent'. "
                "For farewells, delegate to 'farewell_agent'. "
                "For reasoning, delegate to 'reasoning_agent'. "
+               "For travel-related questions and recommendations, delegate to the 'travel_agent'. The travel_agent can "
+               "help with destination information, flight options, hotel recommendations, tourist attractions, and "
+               "pre-trip planning including packing suggestions and travel requirements. "
                "When speaking to users, use natural, conversational language that works well for both text and voice interactions. "
                "Emphasize to users that you provide real-time weather data when they ask about the weather.",
     tools=[search_web],  # Custom search tool that uses SERPAPI
-    sub_agents=[greeting_agent, farewell_agent, weather_agent],
+    sub_agents=[greeting_agent, farewell_agent, weather_agent, reasoning_agent, travel_agent],
     output_key="last_response"
 )
 
