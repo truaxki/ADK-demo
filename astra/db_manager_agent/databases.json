@@ -1,0 +1,162 @@
+{
+    "database_catalog": {
+      "version": "1.0",
+      "last_updated": "2025-05-04",
+      "databases": [
+        {
+          "name": "user_management",
+          "description": "Core user management database for Astra applications",
+          "database_type": "SQL",
+          "tables": [
+            {
+              "table_name": "users",
+              "description": "Stores core user information",
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "UUID",
+                  "constraints": ["PRIMARY KEY", "NOT NULL"]
+                },
+                {
+                  "name": "username",
+                  "type": "VARCHAR(50)",
+                  "constraints": ["UNIQUE", "NOT NULL"]
+                },
+                {
+                  "name": "email",
+                  "type": "VARCHAR(255)",
+                  "constraints": ["UNIQUE", "NOT NULL"]
+                },
+                {
+                  "name": "password_hash",
+                  "type": "VARCHAR(255)",
+                  "constraints": ["NOT NULL"]
+                },
+                {
+                  "name": "created_at",
+                  "type": "TIMESTAMP",
+                  "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP"]
+                },
+                {
+                  "name": "updated_at",
+                  "type": "TIMESTAMP",
+                  "constraints": ["NOT NULL", "DEFAULT CURRENT_TIMESTAMP"]
+                }
+              ]
+            },
+            {
+              "table_name": "user_preferences",
+              "description": "Stores user preferences and settings",
+              "columns": [
+                {
+                  "name": "user_id",
+                  "type": "UUID",
+                  "constraints": ["PRIMARY KEY", "NOT NULL"]
+                },
+                {
+                  "name": "theme",
+                  "type": "VARCHAR(20)",
+                  "constraints": ["DEFAULT 'light'"]
+                },
+                {
+                  "name": "language",
+                  "type": "VARCHAR(10)",
+                  "constraints": ["DEFAULT 'en-US'"]
+                },
+                {
+                  "name": "timezone",
+                  "type": "VARCHAR(50)",
+                  "constraints": ["DEFAULT 'UTC'"]
+                },
+                {
+                  "name": "temperature_unit",
+                  "type": "VARCHAR(1)",
+                  "constraints": ["DEFAULT 'F'"]
+                }
+              ]
+            }
+          ],
+          "relationships": [
+            {
+              "from_table": "users",
+              "to_table": "user_preferences",
+              "type": "one-to-one",
+              "foreign_key": "user_id"
+            }
+          ],
+          "indexes": [
+            {
+              "table": "users",
+              "name": "idx_users_email",
+              "columns": ["email"],
+              "type": "BTREE"
+            },
+            {
+              "table": "users",
+              "name": "idx_users_username",
+              "columns": ["username"],
+              "type": "BTREE"
+            }
+          ]
+        },
+        {
+          "name": "weather_data",
+          "description": "Database for storing weather information and forecasts",
+          "database_type": "NoSQL",
+          "collections": [
+            {
+              "collection_name": "current_weather",
+              "description": "Stores current weather conditions for locations",
+              "sample_document": {
+                "location_id": "string",
+                "city": "string",
+                "country": "string",
+                "latitude": "float",
+                "longitude": "float",
+                "temperature": "float",
+                "feels_like": "float",
+                "humidity": "integer",
+                "wind_speed": "float",
+                "wind_direction": "string",
+                "conditions": "string",
+                "timestamp": "ISO8601 date",
+                "source": "string"
+              }
+            },
+            {
+              "collection_name": "weather_forecasts",
+              "description": "Stores weather forecasts for different locations",
+              "sample_document": {
+                "location_id": "string",
+                "forecasts": [
+                  {
+                    "date": "ISO8601 date",
+                    "high_temp": "float",
+                    "low_temp": "float",
+                    "conditions": "string",
+                    "precipitation_chance": "float",
+                    "wind_speed": "float"
+                  }
+                ],
+                "created_at": "ISO8601 date",
+                "expires_at": "ISO8601 date"
+              }
+            }
+          ],
+          "indexes": [
+            {
+              "collection": "current_weather",
+              "fields": ["location_id", "timestamp"],
+              "type": "compound"
+            },
+            {
+              "collection": "weather_forecasts",
+              "fields": ["location_id", "created_at"],
+              "type": "compound"
+            }
+          ]
+        }
+      ]
+    }
+  }
+  

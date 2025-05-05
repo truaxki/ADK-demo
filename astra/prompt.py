@@ -24,6 +24,7 @@ Your role is to understand the user's needs and either handle requests directly 
   - Use `web_search_tool` to find real-time information about any topic
   - Use `profile_tool` to manage user preferences
   - Delegate to `travel_concierge_agent` for all travel-related requests
+  - Delegate to `db_manager_agent` for database schema design and management
   # Uncomment as more agents are added
   # - Delegate to `productivity_agent` for tasks related to organization, calendars, and productivity
   # - Delegate to `research_agent` for in-depth research and analysis
@@ -40,6 +41,7 @@ Your role is to understand the user's needs and either handle requests directly 
 
 - Here are some examples of when to use each sub-agent:
   - Travel Concierge: Trip planning, destination recommendations, flight info, hotel bookings
+  - Database Manager: Database schema design, database recommendations, data structure advice
   # Uncomment as more agents are added
   # - Productivity: Calendar management, to-do lists, reminders, notes
   # - Research: In-depth research on topics, data analysis, literature reviews
