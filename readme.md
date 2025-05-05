@@ -1,96 +1,152 @@
-# ADK Testing Repository
+# Google ADK Demonstration
 
-The purpose of this repository is to test Google's Agent Development Kit and explore tool integrations in a multi-agent architecture.
+This repository demonstrates the capabilities of Google's Agent Development Kit (ADK), showcasing a multi-agent architecture through a personal AI assistant named Astra.
 
-## Multi-Agent Orchestration System
+## What is the Google Agent Development Kit?
 
-This repository demonstrates an orchestrated multi-agent system where a coordinator agent manages specialized sub-agents. The main focus is on:
+The Agent Development Kit (ADK) is an open-source framework from Google designed to simplify the development of AI agents and multi-agent systems. It provides developers with tools to build, test, evaluate, and deploy agent-based applications with greater flexibility and control.
 
-- **Coordinator-based Orchestration:** Building a system where a central agent delegates tasks to specialized agents
-- **Multi-Agent Architecture:** Demonstrating how multiple agents can work together through delegation
-- **Tool Development & Testing:** Creating a framework for developing and testing agentic tools
-- **API Integrations:** Connecting agents to external services like weather data and web search
+## What This Demo Showcases
 
-The guardrail implementations (block_keyword_guardrail, block_tool_guardrail) are sample agents for future reference and development.
+![Agent Architecture Diagram](assets/Screenshot%202025-05-04%20205649.png)
 
-## Core Components
+*Diagram showing Astra as the coordinator agent with connections to the travel agent, weather agent, and web search functionality.*
 
-### Coordinator Agent
+This demonstration focuses on:
 
-The main agent that:
-- Manages conversation flow
-- Delegates tasks to specialized sub-agents
-- Integrates external API tools
-- Maintains conversation context
+- **Astra Personal Assistant:** A configurable personal AI assistant
+- **Multi-Agent Architecture:** How specialized sub-agents can work together
+- **Agent Delegation:** How agents can use other agents as tools
+- **External API Integration:** Connecting agents to services like weather data and web search
 
-### Sub-Agents
+### Key Agents in the Demo
 
-- **Greeting Agent:** Handles user greetings
-- **Farewell Agent:** Manages conversation closings
-- **Weather Agent:** Provides weather information
+- **Astra (Coordinator):** The main agent that manages conversation flow
+- **Travel Agent:** Handles travel itinerary questions and planning
+- **Weather Agent:** Provides weather information for locations
+- **More specialized agents:** Each handling specific domains
 
-### Tool Integrations
+## Setup Instructions
 
-The system demonstrates how to build and integrate various tools for agents:
-- **Weather API Tools:** Real-time weather data retrieval
-- **Web Search Tools:** Up-to-date information retrieval
-- **State Management Tools:** Maintaining user preferences
+### Prerequisites
 
-## Weather & Search Agent Demo
+- Python 3.9 or higher
+- Google ADK CLI (will be installed in the steps below)
 
-A simple demonstration agent built with the Agent Development Kit (ADK) that can provide weather information and web search results.
+### Installation
 
-## Required API Keys
-
-* **LLM API Key:** Google Gemini, OpenAI, or Anthropic (choose one based on your preference)
-* **OpenWeatherMap API Key:** For weather data - [Get key here](https://home.openweathermap.org/api_keys)
-* **SerpAPI Key:** For web search functionality - [Get key here](https://serpapi.com/)
-
-## Quick Setup
-
-1. **Install dependencies:**
+1. **Clone this repository:**
    ```bash
-   pip install google-adk litellm requests google-search-results
+   git clone https://github.com/yourusername/adk-demo.git
+   cd adk-demo
    ```
 
-2. **Set up your `.env` file in the coordinator_agent directory:**
-   ```
-   GOOGLE_API_KEY=your_google_key_here
-   # Or alternatively:
-   # OPENAI_API_KEY=your_openai_key_here
-   # ANTHROPIC_API_KEY=your_anthropic_key_here
+2. **Create and activate a virtual environment:**
+   ```bash
+   python -m venv venv
    
-   OPENWEATHERMAP_API_KEY=your_openweathermap_key_here
-   SERPAPI_KEY=your_serpapi_key_here
+   # On Windows
+   venv\Scripts\activate
+   
+   # On macOS/Linux
+   source venv/bin/activate
    ```
 
-3. **Run the agent:**
+3. **Install dependencies:**
    ```bash
-   adk run coordinator_agent/agent.py
-   # Or for web interface:
-   adk web
+   pip install -r requirements.txt
    ```
 
-## Features
+4. **Install the Google ADK CLI:**
+   ```bash
+   pip install google-adk
+   ```
 
-* **Weather Information:** Get current weather conditions for any city
-* **Web Search:** Find up-to-date information from the internet
-* **Smart Conversation:** Maintains context across multiple turns
+5. **Create a `.env` file in the repository root with your API keys:**
+   ```
+   # LLM API (choose one based on your preference)
+   OPENAI_API_KEY=your_openai_key_here
+   # or
+   GOOGLE_API_KEY=your_google_key_here
+   # or
+   ANTHROPIC_API_KEY=your_anthropic_key_here
+   
+   # External Services
+   OPENWEATHERMAP_API_KEY=your_openweathermap_key_here
+   SERPER_API_KEY=your_serper_api_key_here
+   
+   # Astra Configuration
+   ASTRA_APP_NAME=astra
+   ASTRA_USER_ID=your_name
+   ASTRA_SESSION_ID=development
+   ASTRA_DEFAULT_MODEL=openai/gpt-4o-mini
+   ASTRA_DEFAULT_TEMPERATURE_UNIT=Fahrenheit
+   ```
 
-## Project Structure
+## Running the Demo
 
+### Using the ADK Web Interface (Recommended)
+
+The ADK web interface provides a chat UI to interact with the agents:
+
+```bash
+adk web
 ```
-coordinator_agent/
-├── utils/
-│   ├── weather.py    # Weather functionality
-│   └── search.py     # Web search functionality
-├── agent.py          # Main agent logic
-└── .env              # Your API keys (create this file)
+
+This will start a local web server, typically at http://localhost:8080. Open this URL in your browser to interact with Astra.
+
+### Using the ADK CLI
+
+Alternatively, you can run the agent directly in the terminal:
+
+```bash
+adk run astra/agent.py
 ```
 
 ## Example Interactions
 
-* "What's the weather in New York?"
-* "I prefer temperatures in Celsius"
-* "What are the latest developments in AI?"
-* "Search for healthy dinner recipes"
+Here are some examples of what you can ask Astra:
+
+### General Questions
+- "What can you help me with?"
+- "Tell me about yourself"
+
+### Weather Queries
+- "What's the weather like in San Francisco?"
+- "Will it rain in New York tomorrow?"
+- "I prefer temperatures in Celsius"
+
+### Travel Questions
+- "What's on my travel itinerary?"
+- "When am I going to Rio de Janeiro?"
+- "What's the weather like at my first destination?"
+
+### Using Agent Delegation
+- Ask travel questions that require weather information to see how the Travel Agent delegates to the Weather Agent
+
+## Project Structure
+
+```
+astra/                          # Main assistant
+├── agent.py                    # Astra agent implementation
+├── prompt.py                   # Astra prompts
+├── travel_agent/               # Travel planning sub-agent
+│   ├── agent.py                # Travel agent implementation
+│   └── itenerary.json          # Sample travel itinerary
+├── weather_agent/              # Weather information sub-agent
+│   └── agent.py                # Weather agent implementation
+└── other_agents/               # Additional specialized agents
+
+# Configuration files
+.env                            # Environment variables
+requirements.txt                # Python dependencies
+```
+
+## Resources
+
+- [Google ADK Documentation](https://github.com/google/agent-development-kit)
+- [ADK Blog Announcement](https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/)
+
+## License
+
+This demo is provided under the Apache 2.0 License.

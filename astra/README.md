@@ -31,11 +31,44 @@ SERPER_API_KEY=your_serper_api_key
 
 ## Sub-agents
 
-Astra includes several specialized sub-agents:
+Astra includes several specialized sub-agents that handle specific domains:
 
 ### Weather Agent
 
-Provides real-time weather information. [See details](./weather_agent/README.md).
+Provides real-time weather information and forecasts for locations worldwide. [See details](./weather_agent/README.md).
+
+### Travel Agent
+
+Helps manage and answer questions about travel itineraries, with the ability to check weather conditions at destinations by using the Weather Agent. [See details](./travel_agent/README.md).
+
+## Agent Collaboration
+
+One of Astra's key features is the ability for sub-agents to collaborate and delegate tasks to each other:
+
+### Sub-agent Delegation
+
+- Sub-agents can use other sub-agents as tools to complete specialized tasks
+- For example, the Travel Agent can access the Weather Agent to provide weather information for destinations in the itinerary
+- This delegation happens through the ADK's tool-calling mechanism, ensuring seamless integration
+
+### Implementation Example
+
+```python
+# In travel_agent/agent.py
+from google.adk.tools.agent_tool import AgentTool
+from astra.weather_agent.agent import weather_agent
+
+# Configure the Travel Agent with the Weather Agent as a tool
+travel_concierge_agent = Agent(
+    name="travel_concierge_agent",
+    model=LiteLlm(model=MODEL_GPT_4O_MINI),
+    description="Agent to provide travel concierge content and information.",
+    instruction=get_travel_agent_instruction(),
+    tools=[
+        AgentTool(agent=weather_agent)
+    ],
+)
+```
 
 ## Development
 
@@ -47,8 +80,13 @@ To add new configuration values:
 2. Update the `config.py` file to include the new values
 3. Import the values where needed
 
-## Overview
-Astra is a personal agent framework that connects users with specialized sub-agents designed to handle specific domains and tasks. Acting as a coordinator, Astra routes user requests to the appropriate specialized agents based on the nature of the task.
+### Adding New Sub-agents
+
+To add a new sub-agent:
+
+1. Create a new directory following the standard agent structure
+2. Implement the agent with clear instructions on when to delegate to other agents
+3. Register the agent as a tool in the parent agent if needed
 
 ## Architecture
 
@@ -85,15 +123,19 @@ astra/                          # Root agent
 ├── shared_libraries/           # Common utilities used across agents
 │   ├── __init__.py
 │   └── types.py                # Shared data models/schemas
-├── travel_concierge/           # Travel planning sub-agent
+├── travel_agent/               # Travel planning sub-agent
 │   ├── __init__.py
-│   ├── agent.py                # Travel concierge implementation
-│   ├── prompt.py               # Travel concierge prompts
+│   ├── agent.py                # Travel agent implementation
+│   ├── prompt.py               # Travel agent prompts
 │   ├── tools.py                # Travel-specific tools
-│   ├── README.md               # Travel concierge documentation
-│   ├── inspiration/            # Travel inspiration sub-agent
-│   ├── planning/               # Trip planning sub-agent
-│   └── booking/                # Reservation sub-agent
+│   ├── README.md               # Travel agent documentation
+│   └── itenerary.json          # Sample travel itinerary
+├── weather_agent/              # Weather information sub-agent
+│   ├── __init__.py
+│   ├── agent.py                # Weather agent implementation
+│   ├── prompt.py               # Weather agent prompts
+│   ├── tools.py                # Weather-specific tools
+│   └── README.md               # Weather agent documentation
 └── other_agents/               # Additional specialized agents
 ```
 
@@ -108,15 +150,20 @@ astra/                          # Root agent
 Example:
 ```python
 from google.adk.agents import Agent
+from google.adk.tools.agent_tool import AgentTool
 from .prompt import AGENT_INSTRUCTIONS
 from .tools import agent_specific_tool
+from astra.other_agent.agent import other_agent  # Import another agent as a tool
 
 agent_name = Agent(
     model="gemini-2.0-flash",
     name="agent_name",
     description="Description of what this agent does",
     instruction=AGENT_INSTRUCTIONS,
-    tools=[agent_specific_tool]
+    tools=[
+        agent_specific_tool,
+        AgentTool(agent=other_agent)  # Use another agent as a tool
+    ]
 )
 ```
 
@@ -124,33 +171,12 @@ agent_name = Agent(
 - Contain constant string variables with the agent instructions
 - Follow naming convention: `AGENT_NAME_INSTR`
 - Include clear guidance on when to use tools and sub-agents
+- For agents that delegate to others, specify exactly when and how to use other agents
 
 ### Agent Tools (tools.py)
 - Implement tools specific to the agent's domain
 - Use the ADK Tool interface 
 - Tools can wrap functions, APIs, or other agents
-
-### Sub-agent Integration
-- Parent agents should import sub-agents as tools
-- Use `AgentTool` to wrap sub-agents for use in parent agents
-
-Example:
-```python
-# In parent_agent/tools.py
-from google.adk.tools.agent_tool import AgentTool
-from .subagent_name.agent import subagent
-
-subagent_tool = AgentTool(agent=subagent)
-```
-
-## Project Documentation
-
-Beyond the README files in each agent directory, we maintain more comprehensive documentation:
-
-1. **Architecture Document**: High-level overview of the system structure
-2. **Developer Guides**: In the `/docs` directory for contributor onboarding
-3. **API Documentation**: Auto-generated from docstrings
-4. **Project Wiki**: For evolving design decisions and discussions
 
 ## Getting Started
 
@@ -161,7 +187,8 @@ Beyond the README files in each agent directory, we maintain more comprehensive 
 ### Setup
 1. Clone the repository
 2. Install dependencies: `pip install -r requirements.txt`
-3. Configure environment variables
+3. Configure environment variables in a `.env` file
+4. Run the application: `python -m astra.main`
 
 ### Usage
 ```python
@@ -169,4 +196,7 @@ from astra.agent import astra_agent
 
 # Initialize the agent
 response = astra_agent.generate_content("Help me plan a trip to Japan")
+
+# Ask about weather at a travel destination
+response = astra_agent.generate_content("What's the weather like in Tokyo for my upcoming trip?")
 ``` 
