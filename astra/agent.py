@@ -65,7 +65,7 @@ root_agent = Agent(
     description="Astra is a personal AI assistant that helps users with information and tasks.",
     instruction=ASTRA_AGENT_INSTR.format(user_profile=json.dumps(user_profile), _time=current_time),
     tools=[search_web, AgentTool(agent=weather_agent)],
-    sub_agents=[travel_concierge_agent, weather_agent],
+    sub_agents=[travel_concierge_agent],
 )
 
 # Session and Runner

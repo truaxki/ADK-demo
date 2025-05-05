@@ -14,13 +14,14 @@
 
 import os
 import json
-import time
 from datetime import datetime
 from pathlib import Path
 from google.adk.agents import Agent
 from google.adk.models.lite_llm import LiteLlm
+from google.adk.tools.agent_tool import AgentTool
 
 from astra.travel_agent.prompt import TRAVEL_AGENT_INSTR
+from astra.weather_agent.agent import weather_agent
 
 def load_config():
     """Load user profile from config.json."""
@@ -54,6 +55,9 @@ def get_travel_agent_instruction():
         _time=current_time
     )
     
+    # Add an extra prompt to use the itinerary function
+    instruction += f"\n\nIMPORTANT: Use the get_itinerary function to access the complete travel itinerary information."
+    
     return instruction
 
 # Load data for direct access
@@ -69,6 +73,9 @@ travel_concierge_agent = Agent(
     model=LiteLlm(model=MODEL_GPT_4O_MINI),
     description="Agent to provide travel concierge content and information.",
     instruction=get_travel_agent_instruction(),
-    tools=[],
+    tools=[
+        AgentTool(agent=weather_agent)
+    ],
+    sub_agents=[weather_agent]
 )
 print(f"✅ Agent '{travel_concierge_agent.name}' created using model '{travel_concierge_agent.model}'.") 
