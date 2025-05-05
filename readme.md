@@ -30,37 +30,51 @@ This demonstration focuses on:
 
 ### Prerequisites
 
-- Python 3.9 or higher
+- Python 3.11 or higher
+- uv package manager (instructions below)
 - Google ADK CLI (will be installed in the steps below)
 
 ### Installation
 
 1. **Clone this repository:**
    ```bash
-   git clone https://github.com/yourusername/adk-demo.git
+   git clone https://github.com/truaxki/adk-demo.git
    cd adk-demo
    ```
 
-2. **Create and activate a virtual environment:**
+2. **Install uv:**
+   
+   uv is a fast, reliable Python package installer and resolver. This project uses uv to manage dependencies.
+
    ```bash
-   python -m venv venv
+   # For Windows (PowerShell)
+   curl.exe -L --output uv-installer.ps1 https://astral.sh/uv/install.ps1
+   powershell -ExecutionPolicy Bypass -File .\uv-installer.ps1
+   # Restart your terminal after installation
+   
+   # For macOS/Linux
+   curl -L --proto '=https' --tlsv1.2 -sSf https://astral.sh/uv/install.sh | sh
+   source ~/.cargo/env
+   ```
+
+3. **Create and activate a virtual environment:**
+   ```bash
+   # With uv
+   uv venv
    
    # On Windows
-   venv\Scripts\activate
+   .venv\Scripts\activate
    
    # On macOS/Linux
-   source venv/bin/activate
+   source .venv/bin/activate
    ```
 
-3. **Install dependencies:**
+4. **Install dependencies using uv:**
    ```bash
-   pip install -r requirements.txt
+   uv pip install -e .
    ```
 
-4. **Install the Google ADK CLI:**
-   ```bash
-   pip install google-adk
-   ```
+   This will install all dependencies defined in the pyproject.toml file, including google-adk, litellm, and other required packages.
 
 5. **Create a `.env` file in the repository root with your API keys:**
    ```
@@ -139,13 +153,14 @@ astra/                          # Main assistant
 
 # Configuration files
 .env                            # Environment variables
-requirements.txt                # Python dependencies
+pyproject.toml                  # Project dependencies and metadata
 ```
 
 ## Resources
 
 - [Google ADK Documentation](https://github.com/google/agent-development-kit)
 - [ADK Blog Announcement](https://developers.googleblog.com/en/agent-development-kit-easy-to-build-multi-agent-applications/)
+- [uv Documentation](https://github.com/astral-sh/uv)
 
 ## License
 
