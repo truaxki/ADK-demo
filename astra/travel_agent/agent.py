@@ -22,7 +22,18 @@ from google.adk.tools.agent_tool import AgentTool
 
 from astra.travel_agent.prompt import TRAVEL_AGENT_INSTR
 from astra.weather_agent.agent import weather_agent
-from ..db_manager_agent.agent import db_manager_agent
+from astra.shared_libraries.sqlite_tools import (
+    set_db_path,
+    create_database,
+    create_table,
+    write_query,
+    read_query,
+    list_tables,
+    describe_table
+)
+
+from astra.shared_libraries.search_web import search_web
+from .tools import get_weather_stateful, set_temperature_unit, get_travel_database_info
 
 def load_config():
     """Load user profile from config.json."""
@@ -74,9 +85,19 @@ travel_concierge_agent = Agent(
     model=LiteLlm(model=MODEL_GPT_4O_MINI),
     description="Agent to provide travel concierge content and information.",
     instruction=get_travel_agent_instruction(),
-    tools=[ 
+    tools=[
         AgentTool(agent=weather_agent),
-        AgentTool(agent=db_manager_agent)
+        search_web,
+        set_db_path,
+        create_database,
+        create_table,
+        write_query,
+        read_query,
+        list_tables,
+        describe_table,
+        get_weather_stateful,
+        set_temperature_unit,
+        get_travel_database_info
     ],
     sub_agents=[]
 )

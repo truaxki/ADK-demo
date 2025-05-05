@@ -16,10 +16,77 @@ import os
 import requests
 import json
 import time
+from pathlib import Path
 from google.adk.tools.tool_context import ToolContext
 
 # In-memory cache for geocoding results to avoid repeated API calls
 geocoding_cache = {}
+
+def get_travel_database_info(tool_context: ToolContext) -> dict:
+    """Get information about the Astra travel agency database.
+    
+    This function reads the database catalog, finds the travel agency database,
+    sets up a connection to it, and returns details about the database schema.
+    
+    Args:
+        tool_context (ToolContext): The tool context for storing connection information
+        
+    Returns:
+        dict: Information about the travel database including path and tables
+    """
+    try:
+        # Locate and load the database catalog
+        catalog_path = Path(__file__).parent.parent / "db_manager_agent" / "databases.json"
+        
+        if not catalog_path.exists():
+            return {
+                "status": "error",
+                "error_message": "Database catalog not found"
+            }
+            
+        with open(catalog_path, 'r') as f:
+            catalog_data = json.load(f)
+            
+        # Find the travel agency database
+        travel_db = None
+        for db in catalog_data.get("database_catalog", {}).get("databases", []):
+            if db.get("name") == "Astra_travel_agency":
+                travel_db = db
+                break
+                
+        if not travel_db:
+            return {
+                "status": "error",
+                "error_message": "Travel agency database not found in catalog"
+            }
+            
+        # Get the database path
+        db_path = travel_db.get("path")
+        if not db_path:
+            return {
+                "status": "error",
+                "error_message": "Database path not specified in catalog"
+            }
+        
+        # Set the database path in the tool context
+        tool_context.state["sqlite_db_path"] = db_path
+        
+        # Return database information - ensure all values are simple types
+        return {
+            "status": "success",
+            "message": f"Connected to travel database",
+            "name": travel_db.get("name", ""),
+            "description": travel_db.get("description", ""),
+            "path": db_path,
+            "tables": ", ".join(travel_db.get("tables", [])),
+            "type": travel_db.get("type", "")
+        }
+        
+    except Exception as e:
+        return {
+            "status": "error",
+            "error_message": f"Error accessing travel database: {str(e)}"
+        }
 
 def geocode_city(city_name):
     """Convert a city name to geographic coordinates using Nominatim.

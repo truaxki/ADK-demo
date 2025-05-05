@@ -14,7 +14,7 @@ from google.adk.models.lite_llm import LiteLlm
 # Import prompt instructions
 from .prompt import DB_MANAGER_INSTR
 
-# Import SQLite tools from shared libraries
+# Import SQLite and search web tools from shared libraries
 from astra.shared_libraries.sqlite_tools import (
     set_db_path,
     create_database,
@@ -23,6 +23,9 @@ from astra.shared_libraries.sqlite_tools import (
     read_query,
     list_tables,
     describe_table
+)
+from astra.shared_libraries.search_web_tools import (
+    search_web
 )
 
 # Define model
@@ -75,7 +78,9 @@ db_manager_agent = Agent(
         write_query,
         read_query,
         list_tables,
-        describe_table
+        describe_table,
+        # Add search web tool
+        search_web  
     ],
 )
 

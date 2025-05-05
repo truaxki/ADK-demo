@@ -27,6 +27,13 @@ def search_web(query: str) -> dict:
     """
     print(f"Searching for: {query}")
     
+    # Sanitize the query to avoid JSON parsing issues
+    if not query or not isinstance(query, str):
+        return {"error": "Invalid query parameter. Please provide a valid search string."}
+    
+    # Trim and normalize the query
+    query = query.strip()
+    
     api_key = os.getenv("SERPER_API_KEY")
     if not api_key:
         return {"error": "SERPER_API_KEY not set"}
