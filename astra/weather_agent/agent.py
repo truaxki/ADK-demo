@@ -15,7 +15,9 @@
 import os
 from google.adk.agents import Agent
 from google.adk.models.lite_llm import LiteLlm
+from google.adk.tools.agent_tool import AgentTool
 from .tools import get_weather_stateful, set_temperature_unit
+from ..db_manager_agent.agent import db_manager_agent
 
 # Constants
 MODEL_GPT_4O_MINI = "openai/gpt-4o-mini"
@@ -33,8 +35,8 @@ try:
                    "Users can also set their temperature unit preference (Celsius/Fahrenheit) using "
                    "the 'set_temperature_unit' tool, which you should use when they express such a preference. "
                    "Always provide weather information in a friendly, conversational tone.",
-        tools=[get_weather_stateful, set_temperature_unit],
+        tools=[get_weather_stateful, set_temperature_unit, AgentTool(agent=db_manager_agent)],
     )
     print(f"✅ Agent '{weather_agent.name}' created using model '{weather_agent.model}'.")
 except Exception as e:
-    print(f"❌ Could not create Weather agent. Check API Key ({weather_agent.model}). Error: {e}") 
+    print(f"❌ Could not create Weather agent. Check API Key. Error: {e}") 

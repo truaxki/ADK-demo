@@ -14,6 +14,17 @@ from google.adk.models.lite_llm import LiteLlm
 # Import prompt instructions
 from .prompt import DB_MANAGER_INSTR
 
+# Import SQLite tools from shared libraries
+from astra.shared_libraries.sqlite_tools import (
+    set_db_path,
+    create_database,
+    create_table,
+    write_query,
+    read_query,
+    list_tables,
+    describe_table
+)
+
 # Define model
 MODEL_GPT_4O_MINI = "openai/gpt-4o-mini"
 
@@ -56,7 +67,16 @@ db_manager_agent = Agent(
         database_catalog=json.dumps(database_catalog, indent=2),
         _time=current_time
     ),
-    tools=[],  # No tools for now, as specified by the user
+    tools=[
+        # Add SQLite database tools
+        set_db_path,
+        create_database,
+        create_table,
+        write_query,
+        read_query,
+        list_tables,
+        describe_table
+    ],
 )
 
 print(f"✅ Agent '{db_manager_agent.name}' created using model '{MODEL}'.") 

@@ -1,51 +1,96 @@
-# Database Manager Agent
+# Async SQLite Tools for Agent Development Kit
 
-A specialized sub-agent for Astra that helps design and manage database schemas.
-
-## Overview
-
-The Database Manager Agent is a specialized component that handles all database-related queries. It helps users brainstorm and design appropriate database schemas for various projects, providing recommendations on structure, relationships, and optimization.
-
-## Setup Requirements
-
-### Configuration
-
-This agent uses a database catalog file to keep track of existing database schemas:
-
-```
-astra/db_manager_agent/databases.json
-```
-
-This catalog contains information about existing database schemas that can be referenced when designing new ones.
+This module provides asynchronous SQLite database tools for use with the Google Agent Development Kit (ADK).
 
 ## Features
 
-- **Database schema design** for various project requirements
-- **Schema optimization recommendations** based on best practices
-- **Database type suggestions** (SQL, NoSQL, Graph, etc.)
-- **Documentation** of schemas in a standardized format
+- Async SQLite operations using aiosqlite
+- Integration with ADK's ToolContext for state management
+- Database connection pooling with singleton instance
+- Error handling and standardized response format
+- Tools for common database operations:
+  - Reading data (SELECT queries)
+  - Writing data (INSERT, UPDATE, DELETE)
+  - Creating tables
+  - Listing tables
+  - Describing table schemas
+  - Setting database path
 
-## Usage Examples
+## Installation
 
-When integrated with Astra, users can ask queries like:
+1. Make sure to install the required packages:
 
-- "I need a database schema for a blog platform"
-- "What's the best database structure for an e-commerce site?"
-- "Help me design a user management database"
-- "What should my schema look like for a social media application?"
+```bash
+pip install -r requirements.txt
+```
 
-## Future Goals
+2. Import the tools in your agent code
 
-In future iterations, the Database Manager Agent will be enhanced with the following capabilities:
+## Usage
 
-### SQL Operations on a Central Database
+Here's a simple example of how to use these tools:
 
-- **Direct database connectivity** to a central database system
-- **Perform SQL queries** on existing databases
-- **Execute schema modifications** (CREATE TABLE, ALTER TABLE, etc.)
-- **Data analysis** through SQL aggregation functions
-- **Performance monitoring** and optimization suggestions
-- **Migration planning** for schema updates
-- **Security recommendations** for database access control
+```python
+import asyncio
+from google.adk.tools.tool_context import ToolContext
+from astra.db_manager_agent.sqlite_tools import (
+    set_db_path, 
+    create_table, 
+    write_query, 
+    read_query
+)
 
-These enhancements will transform the agent from a schema design advisor into a full database management assistant that can both recommend and implement database solutions. 
+async def example():
+    # Create a tool context
+    tool_context = ToolContext()
+    
+    # Set database path
+    await set_db_path("my_database.db", tool_context)
+    
+    # Create a table
+    create_table_sql = """
+    CREATE TABLE IF NOT EXISTS products (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        price REAL NOT NULL
+    )
+    """
+    await create_table(create_table_sql, tool_context)
+    
+    # Insert data
+    insert_sql = """
+    INSERT INTO products (name, price) VALUES 
+    ('Widget', 19.99),
+    ('Gadget', 24.99)
+    """
+    await write_query(insert_sql, tool_context)
+    
+    # Query data
+    select_sql = "SELECT * FROM products WHERE price < 25.0"
+    result = await read_query(select_sql, tool_context)
+    print(result)
+```
+
+## Response Format
+
+All tools return a dictionary with at least a `status` field, which is either "success" or "error". 
+
+For successful operations:
+- `read_query` returns a `data` field with query results
+- `list_tables` returns a `tables` field with all table names
+- `describe_table` returns a `schema` field with table structure
+- `write_query` returns `affected_rows` with the count of modified rows
+
+For error conditions, all tools return an `error_message` field with details.
+
+## Running the Example
+
+An example script is provided in the `examples` directory:
+
+```bash
+python -m astra.db_manager_agent.examples.sqlite_example
+```
+
+## Integration with ADK
+
+When integrating with ADK, you can register these functions as tools for your agent with proper asynchronous handling. 
